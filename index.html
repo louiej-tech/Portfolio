@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Louie Jover — Player 1: Automation Engineer</title>
+<meta name="description" content="Louie Philip Jover — Workflow & AI Automation Specialist. Play through the missions, try the lead-triage simulation, then hire Player 1.">
+<meta property="og:title" content="Louie Jover — Player 1: Automation Engineer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d1f'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='30' fill='%23ff5c3a' text-anchor='middle'%3ELJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
+<style>
+:root{--bg:#0d0d1f;--panel:#1a1a38;--ink:#f4efd6;--dim:#9a97b8;--hot:#ff5c3a;--good:#4ade80;--gold:#ffd23f;--blue:#5c94fc}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:22px/1.3 'VT323',monospace;
+background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px;padding-top:64px}
+a{color:inherit;text-decoration:none}
+.px{font-family:'Press Start 2P',monospace;font-size:.6rem;line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:0 1.25rem}
+section{padding:4rem 0}
+h2{font-family:'Press Start 2P',monospace;font-size:1rem;line-height:1.6;color:var(--gold);margin-bottom:.5rem}
+.sub{color:var(--dim);margin-bottom:1.5rem;max-width:44rem}
+.box{background:var(--panel);border:4px solid var(--ink);box-shadow:6px 6px 0 #000;padding:1.25rem}
+.btn{display:inline-block;font-family:'Press Start 2P',monospace;font-size:.6rem;line-height:1.6;padding:.9rem 1.1rem;border:4px solid var(--ink);background:var(--bg);color:var(--ink);box-shadow:4px 4px 0 #000;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.btn:hover,.btn:focus-visible{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;outline:none}
+.btn.hot{background:var(--hot);color:#fff}
+.btn.gold{background:var(--gold);color:#111}
+.btn.sm{padding:.55rem .7rem;font-size:.5rem}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;z-index:50;background:#000;border-bottom:4px solid var(--ink);display:flex;align-items:center;gap:1rem;padding:.6rem 1rem}
+#hud .name{font-family:'Press Start 2P',monospace;font-size:.6rem;color:var(--gold);white-space:nowrap}
+#xp{flex:1;height:14px;border:3px solid var(--ink);background:var(--bg);min-width:40px}
+#xpf{height:100%;width:0;background:var(--good)}
+#hud .btn{padding:.5rem .6rem;font-size:.5rem;box-shadow:3px 3px 0 #000}
+@media(max-width:700px){#hud .name{display:none}#mode{display:none}}
+/* title */
+#title{min-height:calc(100vh - 64px);display:flex;align-items:center}
+.tgrid{display:grid;grid-template-columns:1fr 200px;gap:2rem;align-items:center}
+h1{font-family:'Press Start 2P',monospace;font-size:clamp(1.4rem,5vw,2.6rem);line-height:1.4;text-shadow:4px 4px 0 var(--hot)}
+.tag{font-size:1.6rem;color:var(--blue);margin:1rem 0}
+.blink{animation:bl 1s steps(2) infinite;color:var(--gold)}
+@keyframes bl{50%{opacity:0}}
+.avatar{width:200px;height:200px;object-fit:cover;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--hot)}
+.pill{display:inline-block;border:3px solid var(--dim);padding:.1rem .6rem;margin:.2rem .2rem 0 0;color:var(--dim)}
+.cta{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+@media(max-width:700px){.tgrid{grid-template-columns:1fr}.avatar{width:120px;height:120px;order:-1}}
+/* demo */
+.form{display:grid;gap:.8rem}
+.form label{color:var(--dim)}
+.form input,.form textarea,.form select{width:100%;background:var(--bg);color:var(--ink);border:3px solid var(--ink);padding:.5rem;font:inherit}
+.form textarea{min-height:90px;resize:vertical}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+#flow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1.25rem 0;min-height:52px}
+.node{border:3px solid var(--dim);color:var(--dim);padding:.5rem .7rem;font-family:'Press Start 2P',monospace;font-size:.5rem;transition:all .2s}
+.node.on{border-color:var(--good);color:var(--good);background:#0a2a14;transform:translateY(-3px)}
+.wire{color:var(--dim)}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.out>div{border:3px dashed var(--dim);padding:.8rem;min-height:110px}
+.out h3{font-family:'Press Start 2P',monospace;font-size:.5rem;color:var(--blue);margin-bottom:.5rem}
+#verdict{font-family:'Press Start 2P',monospace;font-size:.7rem;margin:.5rem 0}
+.hi{color:var(--hot)}.lo{color:var(--blue)}
+.note{color:var(--dim);font-size:1.05rem;margin-top:.8rem}
+@media(max-width:700px){.out{grid-template-columns:1fr}}
+/* missions */
+details{margin-bottom:1rem}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary b{font-family:'Press Start 2P',monospace;font-size:.55rem;color:var(--gold);font-weight:400;display:block;margin-bottom:.3rem}
+summary::after{content:'▼ OPEN';font-family:'Press Start 2P',monospace;font-size:.45rem;color:var(--good);white-space:nowrap}
+details[open] summary::after{content:'▲ CLOSE'}
+.m{margin-top:1rem;padding-top:1rem;border-top:3px dashed var(--dim)}
+.m p{margin-bottom:.5rem}
+.m strong{color:var(--hot);font-weight:400}
+.m img{width:100%;border:3px solid var(--ink);margin:.8rem 0}
+.tags span{display:inline-block;border:2px solid var(--dim);color:var(--dim);padding:0 .5rem;margin:.2rem .2rem 0 0;font-size:1rem}
+/* full-only */
+body[data-mode=scan] .full{display:none}
+.lore li{list-style:none;padding:.6rem 0;border-bottom:3px dashed #33335a}
+.lore em{font-style:normal;color:var(--gold)}
+.items{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.item b{font-family:'Press Start 2P',monospace;font-size:.5rem;font-weight:400;color:var(--good);display:block;margin-bottom:.4rem;line-height:1.7}
+.item span{color:var(--dim)}
+/* contact */
+#contact{text-align:center}
+#contact h2{font-size:1.4rem;color:var(--hot)}
+.contact-grid{display:grid;gap:.4rem;margin:1.5rem auto 0;max-width:520px;text-align:left;color:var(--dim)}
+footer{padding:2rem;text-align:center;color:var(--dim)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+html{-webkit-text-size-adjust:100%}
+#title{min-height:calc(100vh - 64px);min-height:calc(100dvh - 64px)}
+#toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;z-index:60;max-width:90vw;background:#000;border:4px solid var(--gold);padding:.7rem 1rem;font-family:'Press Start 2P',monospace;font-size:.5rem;line-height:1.8;color:var(--gold);text-align:center;transition:opacity .25s,transform .25s}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#tro{display:flex;flex-wrap:wrap;gap:.6rem}
+#tro span{border:3px solid var(--dim);color:var(--dim);padding:.3rem .6rem}
+#tro span.got{border-color:var(--good);color:var(--good)}
+#trophies{padding:2.5rem 0}
+@media(max-width:700px){
+body{font-size:20px;padding-top:calc(60px + env(safe-area-inset-top,0px))}
+#hud{gap:.5rem;padding:calc(.5rem + env(safe-area-inset-top,0px)) .6rem .5rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:44px}
+.cta .btn{flex:1 1 100%}
+section{padding:2.5rem 0}
+summary{min-height:44px}
+.node{font-size:.45rem;padding:.4rem .5rem}
+.contact-grid{word-break:break-word}
+}
+.cbtn{font:inherit;color:inherit;background:none;border:0;text-align:left;cursor:pointer;padding:0}
+.cbtn em{font-style:normal;color:var(--good)}
+.lnk{color:var(--blue);text-decoration:underline}
+dialog{color:var(--ink);margin:auto;max-width:520px;width:calc(100% - 2rem)}
+dialog::backdrop{background:rgba(0,0,0,.75)}
+</style>
+</head>
+<body data-mode="scan">
+
+<header id="hud">
+  <span class="name">LOUIE JOVER</span>
+  <div id="xp" aria-hidden="true"><div id="xpf"></div></div>
+  <button class="btn" id="snd" type="button">SOUND: OFF</button>
+  <button class="btn" id="mode" type="button">MODE: QUICK</button>
+  <a class="btn" href="Louie_Jover_Resume.pdf" target="_blank" rel="noopener">RESUME</a>
+  <a class="btn hot" href="#contact">HIRE ME</a>
+</header>
+
+<section id="title"><div class="wrap tgrid">
+  <div>
+    <p class="px" style="color:var(--dim)">PLAYER 1 · CLASS: AUTOMATION ENGINEER</p>
+    <h1>LOUIE<br>JOVER</h1>
+    <p class="tag">Systems that run without you.</p>
+    <p>I build n8n, Zapier, Make and GoHighLevel workflows, wired to Claude and other AI, that take repetitive work off your team.</p>
+    <p style="margin-top:.6rem"><span class="pill">n8n</span><span class="pill">Zapier</span><span class="pill">Make</span><span class="pill">GoHighLevel</span><span class="pill">Claude / RAG</span></p>
+    <p class="px blink" style="margin-top:1.5rem">PRESS START</p>
+    <div class="cta">
+      <button class="btn gold" id="go-scan" type="button">▶ QUICK SCAN · 60 SEC</button>
+      <button class="btn" id="go-full" type="button">▶ FULL QUEST</button>
+    </div>
+  </div>
+  <img class="avatar" src="profileAI1.png" alt="Louie Philip Jover">
+</div></section>
+
+<section id="demo"><div class="wrap">
+  <h2>BOSS FIGHT: THE LEAD</h2>
+  <p class="sub">Every inbound lead is a boss that shows up when nobody is watching. Send one through a simulation of my Zapier lead-triage workflow and see how it gets handled.</p>
+  <div class="box">
+    <div class="form">
+      <div class="row"><button class="btn sm" id="p-hot" type="button">LOAD HOT LEAD</button><button class="btn sm" id="p-cold" type="button">LOAD COLD LEAD</button></div>
+      <div><label for="f-name">Name</label><input id="f-name" value="Maya"></div>
+      <div><label for="f-msg">Message</label><textarea id="f-msg">Need this urgent. We want to hire someone for a project this week. Budget is ready, please send a quote.</textarea></div>
+      <div><label for="f-b">Budget</label><select id="f-b"><option value="0">Under $500</option><option value="1">$500 – $2,000</option><option value="3" selected>$2,000+</option></select></div>
+      <div><button class="btn hot" id="run" type="button">▶ SEND LEAD THROUGH THE WORKFLOW</button></div>
+    </div>
+    <div id="flow" aria-live="polite"></div>
+    <div id="verdict"></div>
+    <div class="out">
+      <div><h3>SLACK ALERT</h3><p id="slack">—</p></div>
+      <div><h3>DRAFTED REPLY</h3><p id="draft">—</p></div>
+    </div>
+    <p class="note">Simulation of my Zapier workflow (Youform → triage → Sheets, Slack, AI draft, Gmail). It runs in your browser with simple rules and templates; nothing is sent anywhere. Real build: see Mission 02.</p>
+  </div>
+</div></section>
+
+<section id="missions"><div class="wrap">
+  <h2>MISSIONS</h2>
+  <p class="sub">Missions 01–04 were built during mentor-led training, modeled on real client briefs. Mission 05 is my own build.</p>
+
+  <details class="box"><summary><div><b>MISSION 01 · n8n</b>AI Appointment Setter (VAPI)</div></summary><div class="m">
+    <p><strong>PROBLEM</strong> Bookings only happened when a human was free to check the calendar.</p>
+    <p><strong>BUILD</strong> Four modules (GetSlots, BookSlots, UpdateSlots, CancelSlots) with VAPI voice, each checking availability before touching the calendar.</p>
+    <p><strong>RESULT</strong> Booking works whether or not anyone is watching a screen.</p>
+    <img src="AI-Appointment-Setter-VAPI.jpg" alt="AI Appointment Setter workflow in n8n" loading="lazy">
+    <div class="tags"><span>n8n</span><span>VAPI</span><span>Airtable</span></div><p style="margin-top:.8rem"><a class="btn sm" href="https://youtu.be/-puVng_ISQM" target="_blank" rel="noopener">▶ WATCH WALKTHROUGH</a></p></div></details>
+
+  <details class="box"><summary><div><b>MISSION 02 · Zapier</b>Automated Leads Enrichment</div></summary><div class="m">
+    <p><strong>PROBLEM</strong> Every form submission needed a person to read it, judge it and reply.</p>
+    <p><strong>BUILD</strong> Youform submissions split into high and low priority; high ones log to Sheets, ping Slack, get an AI-drafted email and go out via Gmail.</p>
+    <p><strong>RESULT</strong> No lead sits untouched, and the best ones are flagged first.</p>
+    <img src="Automated-leads-enrichment.jpg" alt="Leads enrichment Zap" loading="lazy">
+    <div class="tags"><span>Zapier</span><span>Slack</span><span>Gmail</span><span>Sheets</span></div><p style="margin-top:.8rem"><a class="btn sm" href="https://youtu.be/WgetcsHJIMo" target="_blank" rel="noopener">▶ WATCH WALKTHROUGH</a></p></div></details>
+
+  <details class="box"><summary><div><b>MISSION 03 · Make.com</b>Xero → Asana Transaction Sync</div></summary><div class="m">
+    <p><strong>PROBLEM</strong> Finance and project data lived in two systems that never talked.</p>
+    <p><strong>BUILD</strong> A scenario that exports Xero transactions, logs them to Sheets and uploads a formatted CSV to Asana.</p>
+    <p><strong>RESULT</strong> Accounting and project tracking stay in sync with no manual export.</p>
+    <img src="Export_Account_Transaction_from_Xero_to_Upload_CSV_to_Asana.jpg" alt="Make scenario Xero to Asana" loading="lazy">
+    <div class="tags"><span>Make</span><span>Xero</span><span>Asana</span></div><p style="margin-top:.8rem"><a class="btn sm" href="https://youtu.be/p9tawUuoOeU" target="_blank" rel="noopener">▶ WATCH WALKTHROUGH</a></p></div></details>
+
+  <details class="box"><summary><div><b>MISSION 04 · n8n</b>FB Chatbot with Gemini AI</div></summary><div class="m">
+    <p><strong>PROBLEM</strong> Facebook message volume made human-only replies unsustainable.</p>
+    <p><strong>BUILD</strong> Webhook-triggered flow with a Gemini AI agent and memory that holds context across turns.</p>
+    <p><strong>RESULT</strong> Context-aware replies, even outside business hours.</p>
+    <img src="FB-Chatbot.jpg" alt="FB chatbot workflow in n8n" loading="lazy">
+    <div class="tags"><span>n8n</span><span>Gemini</span><span>Webhook</span></div><p style="margin-top:.8rem;color:var(--dim)">Walkthrough video coming soon.</p></div></details>
+
+  <details class="box"><summary><div><b>MISSION 05 · n8n · MY OWN BUILD</b>Safety Inspection Analyzer</div></summary><div class="m">
+    <p><strong>PROBLEM</strong> Site inspection photos pile up faster than anyone can review them against safety standards.</p>
+    <p><strong>BUILD</strong> Photos from a phone or camera upload through an HTML page to an n8n webhook, go to an AI inspector that flags hazards and cites the standard, then log to Airtable.</p>
+    <p><strong>RESULT</strong> Each finding lands as a row with hazard, OSHA citation and description, marked Pending Review for a human to confirm.</p>
+    <img src="Safetyinspectionanalyzer.png" alt="Safety analyzer workflow in n8n" loading="lazy">
+    <img src="inspectionresult.png" alt="Airtable Inspection Findings table" loading="lazy">
+    <div class="tags"><span>n8n</span><span>Claude</span><span>Airtable</span><span>Docker</span></div></div></details>
+</div></section>
+
+<section id="lore" class="full"><div class="wrap">
+  <h2>BACKSTORY</h2>
+  <p class="sub">Sixteen years of operations, data and project work before the automation.</p>
+  <ul class="box lore">
+    <li><em>2020</em> · Program &amp; Project Management Analyst, Accenture</li>
+    <li><em>2018–2020</em> · Data Analyst, Accenture</li>
+    <li><em>2012–2020</em> · Business Operator / Systems Manager, two service businesses</li>
+    <li><em>2011–2012</em> · Team Leader, DSL Sales, Bayantel</li>
+    <li><em>2009–2011</em> · Technical Support Professional, Stream Global</li>
+    <li><em>2008</em> · B.S. Electronics &amp; Communications Engineering, AMA Computer University</li>
+  </ul>
+</div></section>
+
+<section id="items" class="full"><div class="wrap">
+  <h2>INVENTORY</h2>
+  <p class="sub">Certifications collected in 2026.</p>
+  <div class="items">
+    <div class="box item"><b>AI AUTOMATION WITH n8n</b><span>Technical Virtual Assistants PH / Tara AI · Jul 10</span></div>
+    <div class="box item"><b>PROMPT ENGINEERING</b><span>Tara AI Community+ · Jul 11</span></div>
+    <div class="box item"><b>HIGHLEVEL CRM</b><span>Tara AI Community+ · Jul 30</span></div>
+    <div class="box item"><b>MAKE.COM AUTOMATION</b><span>Technical Virtual Assistants PH · Jun 20</span></div>
+    <div class="box item"><b>ZAPIER AUTOMATION</b><span>Technical Virtual Assistants PH · May 8</span></div>
+  </div>
+</div></section>
+
+<section id="trophies"><div class="wrap">
+  <h2>TROPHIES <span id="tcount"></span></h2>
+  <div id="tro"></div>
+  <p class="note">Sound is off by default and never autoplays. Some old cheat codes still work.</p>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2>CONTINUE?</h2>
+  <p class="sub" style="margin:0 auto 1.5rem">Open to full-time automation / AI roles and defined project briefs.</p>
+  <div class="cta" style="justify-content:center">
+    <a class="btn hot openmail" href="mailto:louie.tech26@gmail.com?subject=Hiring%20inquiry" data-s="Hiring inquiry: Automation/AI role" data-b="Hi Louie,&#10;&#10;Role / company:&#10;Timeline:&#10;&#10;Thanks,">▶ YES, I'M HIRING</a>
+    <a class="btn gold openmail" href="mailto:louie.tech26@gmail.com?subject=Project%20brief" data-s="Project brief" data-b="Hi Louie,&#10;&#10;What needs automating:&#10;Tools involved:&#10;Timeline:&#10;&#10;Thanks,">▶ I HAVE A PROJECT</a>
+    <a class="btn" href="Louie_Jover_Resume.pdf" target="_blank" rel="noopener">▶ RESUME</a>
+  </div>
+  <div class="contact-grid">
+    <button class="cbtn" id="copy-email" type="button">Email · louie.tech26@gmail.com <em>[TAP TO COPY]</em></button>
+    <span>Message · <a class="lnk" href="https://wa.me/639171437110" target="_blank" rel="noopener">WhatsApp</a> · <a class="lnk" href="sms:+639171437110">SMS</a> · +63 917 143 7110 (messages only, no calls)</span>
+    <span>LinkedIn · <a class="lnk" href="https://www.linkedin.com/in/louie-jover-2236082b7" target="_blank" rel="noopener">linkedin.com/in/louie-jover-2236082b7</a></span>
+    <span>Base · San Remigio, Cebu (GMT+8). I may be asleep, driving or away, so please message or email and I'll reply when I'm back online.</span>
+  </div>
+</div></section>
+<dialog id="dlg" class="box"><h2 style="font-size:.8rem">SEND A MESSAGE</h2><p class="sub" style="margin:.6rem 0 1rem">Pick how you'd like to write to me. It opens in a new tab with a short starter filled in.</p>
+<div class="cta" style="margin:0"><a class="btn hot" id="d-gm" target="_blank" rel="noopener">GMAIL</a><a class="btn" id="d-ol" target="_blank" rel="noopener">OUTLOOK</a><a class="btn" id="d-ma">MAIL APP</a><button class="btn gold" id="d-cp" type="button">COPY EMAIL</button></div>
+<p style="margin-top:1rem"><button class="btn sm" id="d-x" type="button">CLOSE</button></p></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>© 2026 Louie Philip Jover · Player 1 has entered the chat</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function setMode(m){document.body.dataset.mode=m;$('#mode').textContent='MODE: '+(m==='scan'?'QUICK':'FULL')}
+$('#mode').onclick=()=>setMode(document.body.dataset.mode==='scan'?'full':'scan');
+$('#go-scan').onclick=()=>{setMode('scan');$('#demo').scrollIntoView()};
+$('#go-full').onclick=()=>{setMode('full');$('#demo').scrollIntoView()};
+addEventListener('scroll',()=>{const h=document.documentElement;$('#xpf').style.width=Math.min(100,scrollY/(h.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+$('#p-hot').onclick=()=>{$('#f-name').value='Maya';$('#f-msg').value='Need this urgent. We want to hire someone for a project this week. Budget is ready, please send a quote.';$('#f-b').value='3'};
+$('#p-cold').onclick=()=>{$('#f-name').value='Sam';$('#f-msg').value='Just browsing, curious what you do.';$('#f-b').value='0'};
+let timers=[];
+$('#run').onclick=()=>{
+  timers.forEach(clearTimeout);timers=[];
+  const name=esc($('#f-name').value.trim()||'there'),msg=$('#f-msg').value.toLowerCase(),b=+$('#f-b').value;
+  let s=0,why=[];
+  [['urgent|asap|today|this week',2,'urgent timing'],['budget|quote|price|\\$',2,'money mentioned'],['hire|project|contract|proposal',2,'hiring intent']].forEach(([re,p,l])=>{if(new RegExp(re).test(msg)){s+=p;why.push(l+' +'+p)}});
+  if(b){s+=b;why.push('budget +'+b)}
+  const high=s>=4;
+  const nodes=['FORM','CLEAN TEXT','SCORE','SPLIT PATHS'].concat(high?['SHEETS','SLACK','AI DRAFT','GMAIL']:['GMAIL']);
+  $('#flow').innerHTML=nodes.map(n=>'<span class="node">'+n+'</span>').join('<span class="wire">▶</span>');
+  ['#verdict','#slack','#draft'].forEach(i=>$(i).textContent=i==='#verdict'?'':'…');
+  const els=[...document.querySelectorAll('.node')];
+  els.forEach((e,i)=>timers.push(setTimeout(()=>{
+    e.classList.add('on');
+    if(i===2)$('#verdict').innerHTML='SCORE '+s+' · '+(why.join(', ')||'no signals');
+    if(i===3)$('#verdict').innerHTML+=' → <span class="'+(high?'hi':'lo')+'">'+(high?'HIGH':'LOW')+' PRIORITY</span>';
+    if(i===els.length-1){
+      $('#slack').innerHTML=high?'#leads — New HIGH priority lead from '+name+'. Reply drafted, waiting for you.':'No alert sent. Lead logged for the normal queue.';
+      $('#draft').innerHTML=high?'Hi '+name+', thanks for reaching out. Your timeline and scope sound like a good fit. Are you free for a 20-minute call this week to go over details?':'Hi '+name+', thanks for your note. Here is a short overview of what I do; I will follow up within two business days.';
+    }
+  },i*450)));
+};
+
+/* sound, trophies, secrets */
+let snd=false,ac;
+function beep(f,d=.08,t='square',v=.05,w=0){if(!snd)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+w;o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+d)}catch(e){}}
+$('#snd').onclick=()=>{snd=!snd;$('#snd').textContent='SOUND: '+(snd?'ON':'OFF');beep(660,.08)};
+document.addEventListener('click',e=>{if(e.target.closest('.btn,summary')&&e.target.id!=='snd')beep(520,.05)});
+const A={start:'PLAYER READY',boss:'BOSS DEFEATED',open:'MISSION ACCEPTED',all:'COMPLETIONIST',watch:'SPECTATOR',cheat:'CHEAT CODE'};
+const got=new Set(),opened=new Set();let tt2;
+function render(){$('#tro').innerHTML=Object.keys(A).map(k=>got.has(k)?'<span class="got">[x] '+A[k]+'</span>':'<span>[ ] '+(k==='cheat'?'???':A[k])+'</span>').join('');$('#tcount').textContent='('+got.size+'/6)'}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(tt2);tt2=setTimeout(()=>e.classList.remove('show'),2600)}
+function unlock(k){if(got.has(k))return;got.add(k);render();toast('TROPHY UNLOCKED: '+A[k]);[523,659,784].forEach((f,i)=>beep(f,.1,'square',.05,i*.1))}
+render();
+['#go-scan','#go-full'].forEach(x=>$(x).addEventListener('click',()=>unlock('start')));
+$('#run').addEventListener('click',()=>{unlock('boss');const n=document.querySelectorAll('.node').length;for(let i=0;i<n;i++)setTimeout(()=>beep(300+i*80,.07),i*450)});
+document.querySelectorAll('#missions details').forEach((d,i)=>d.addEventListener('toggle',()=>{if(!d.open)return;unlock('open');opened.add(i);if(opened.size===5)unlock('all')}));
+document.querySelectorAll('a[href*="youtu.be"]').forEach(a=>a.addEventListener('click',()=>unlock('watch')));
+function secret(){unlock('cheat');toast('+30 LIVES · the real cheat code is hiring me')}
+const K=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let ki=0;
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;ki=k===K[ki]?ki+1:(k===K[0]?1:0);if(ki===K.length){ki=0;secret()}});
+let taps=0,tp;$('h1').addEventListener('click',()=>{taps++;clearTimeout(tp);tp=setTimeout(()=>taps=0,3000);if(taps>=5){taps=0;secret()}});
+
+/* contact */
+const E='louie.tech26@gmail.com';
+function fb(t){const x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}x.remove();toast(ok?'EMAIL COPIED':'COPY FAILED: '+t)}
+function copyEmail(){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(E).then(()=>toast('EMAIL COPIED'),()=>fb(E))}else fb(E)}
+$('#copy-email').onclick=copyEmail;
+const dlg=$('#dlg');
+document.querySelectorAll('.openmail').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const s=encodeURIComponent(a.dataset.s),b=encodeURIComponent(a.dataset.b);
+$('#d-gm').href='https://mail.google.com/mail/?view=cm&fs=1&to='+E+'&su='+s+'&body='+b;
+$('#d-ol').href='https://outlook.office.com/mail/deeplink/compose?to='+E+'&subject='+s+'&body='+b;
+$('#d-ma').href='mailto:'+E+'?subject='+s+'&body='+b;dlg.showModal()}));
+['#d-gm','#d-ol','#d-ma','#d-x'].forEach(x=>$(x).addEventListener('click',()=>dlg.close()));
+$('#d-cp').onclick=()=>{copyEmail();dlg.close()};
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+</script>
+</body>
+</html>
